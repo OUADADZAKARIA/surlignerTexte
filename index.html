@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surligner le texte avec la valeur sélectionnée</title>
+<style>
+  .highlight {
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+  <select id="select">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="5">5</option>
+    <option value="11">11</option>
+    <option value="31">31</option>
+  </select>
+
+  <div class="text">Texte contenant le chiffre 1</div>
+  <div class="text">Texte contenant le chiffre 2</div>
+  <div class="text">Texte contenant le chiffre 5</div>
+  <div class="text">Texte contenant le chiffre 11</div>
+  <div class="text">Texte contenant le chiffre 31</div>
+
+  <script>
+    function surlignerTexte() {
+      const select = document.getElementById('select');
+      const texts = document.querySelectorAll('.text');
+      const selectedValue = select.value;
+
+      texts.forEach(text => {
+        const textContent = text.textContent;
+        const regex = new RegExp(`\\b${selectedValue}\\b`);
+        if (textContent.match(regex)) {
+          text.innerHTML = textContent.replace(regex, `<strong>${selectedValue}</strong>`);
+        } else {
+          text.innerHTML = textContent;
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      surlignerTexte(); // Exécuter au chargement de la page
+      const select = document.getElementById('select');
+      select.addEventListener('change', surlignerTexte); // Exécuter lorsque la sélection change
+    });
+  </script>
+</body>
+</html>
