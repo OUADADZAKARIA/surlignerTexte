@@ -10,14 +10,15 @@
     font-weight: bold;
   }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
   <select id="select">
-    <option value="1">1</option>
-    <option value="2">2</option>
-    <option value="5">5</option>
-    <option value="11">11</option>
-    <option value="31">31</option>
+    <option>Relevé 1</option>
+    <option>Relevé 2</option>
+    <option>Relevé 5</option>
+    <option>Relevé 11</option>
+    <option>Relevé 31</option>
   </select>
 
   <div class="text">Texte contenant le chiffre 1</div>
@@ -27,26 +28,22 @@
   <div class="text">Texte contenant le chiffre 31</div>
 
   <script>
-    function surlignerTexte() {
-      const select = document.getElementById('select');
-      const texts = document.querySelectorAll('.text');
-      const selectedValue = select.value;
-
-      texts.forEach(text => {
-        const textContent = text.textContent;
-        const regex = new RegExp(`\\b${selectedValue}\\b`);
-        if (textContent.match(regex)) {
-          text.innerHTML = textContent.replace(regex, `<strong>${selectedValue}</strong>`);
-        } else {
-          text.innerHTML = textContent;
-        }
+    $(document).ready(function() {
+      $('#select').change(function() {
+        var selectedText = $(this).find('option:selected').text().replace(/^Relevé /, '');
+        $('.text').each(function() {
+          var textContent = $(this).text();
+          var regex = new RegExp('\\b' + selectedText + '\\b');
+          if (textContent.match(regex)) {
+            $(this).html(textContent.replace(regex, '<strong>' + selectedText + '</strong>'));
+          } else {
+            $(this).html(textContent);
+          }
+        });
       });
-    }
 
-    document.addEventListener('DOMContentLoaded', () => {
-      surlignerTexte(); // Exécuter au chargement de la page
-      const select = document.getElementById('select');
-      select.addEventListener('change', surlignerTexte); // Exécuter lorsque la sélection change
+      // Exécuter au chargement de la page
+      $('#select').trigger('change');
     });
   </script>
 </body>
